@@ -28,50 +28,32 @@
 using namespace std;
 
 
-vector<string> &split(const string &s, char delim, vector<string> &elems) {
-    stringstream ss(s);
-    string item;
-    while (getline(ss, item, delim)) {
-        elems.push_back(item);
-    }
-    return elems;
-}
-
-
-vector<string> split(const string &s, char delim) {
-    vector<string> elems;
-    split(s, delim, elems);
-    return elems;
-}
-
-
 string simplifyPath(string path) {
 
-    string result;
-    vector<string> elems = split(path, '/'); 
-   
-    int ignor = 0;
-    for(int i=elems.size()-1; i>=0; i--) {
-         
-        if (elems[i]=="" || elems[i]=="." ){
-            continue;
-        }
-        if (elems[i]==".."){
-            ignor++;
-            continue;
-        }
-        if (ignor>0){
-            ignor--;
-            continue;
-        }
-        if (result.size()==0){
-            result = "/" + elems[i];
-        }else{ 
-            result = "/" + elems[i] + result;
-        }
-    }
+   stack<string> stk;
+        while (!path.empty())
+        {
+            int id = path.find_first_of('/');
+            string tem; //next file name
+            if (id == -1) tem = path, path = "";
+            else tem = path.substr(0, id), path = path.substr(id + 1);
+            
+            if (tem == "." || tem.size() == 0) continue; //current directory
+            else if (tem == "..")    //previous directory
+            {
+                if (!stk.empty()) stk.pop();
+            } //next directory
+            else 
+                stk.push(tem);
 
-    return  result.size() ? result : "/";
+        }
+       
+        string ans;
+        while (!stk.empty())
+            ans = "/" + stk.top() + ans, stk.pop();
+            
+        return ans.empty() ? "/" : ans; //root only
+
         
 }
 
