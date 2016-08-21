@@ -47,7 +47,7 @@ int maxPathSum(TreeNode *root, int& maxSum ) {
     //    3) root
     //    4) root + left + right   
     //
-    // And the whole function need to return the the max of 1) 2) 3) 
+    // And the whole function need to return the the max of 1) 2) 3) 4)
     int val = root->val;
     int maxBranch = left > right ? max(left + val, val) : max(right + val, val);
     int m = max(left + right + val, maxBranch);
