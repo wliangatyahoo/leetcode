@@ -33,9 +33,12 @@
 * Hints:
 * If you notice carefully in the flattened tree, each node's right child points to 
 * the next node of a pre-order traversal.
-*               
+*
+* * Solution - Non-Recursion, No Stack
+* * We can also solve the problem even without a stack:
+* * Each time when we prune a right subtree, we use while-loop to find the right-most leaf of the current left subtree, 
+* * and append the subtree there.
 **********************************************************************************/
-
 /**
  * Definition for binary tree
  * struct TreeNode {
@@ -48,29 +51,18 @@
 class Solution {
 public:
     void flatten(TreeNode *root) {
-        
-        vector<TreeNode*> v, stack;
-        stack.push_back(root);
-        while(stack.size()>0){
-            TreeNode* node = stack.back();
-            stack.pop_back();
-            v.push_back(node);
-            
-            if (node && node->right){
-                stack.push_back(node->right);
-            }
-            if (node && node->left){
-                stack.push_back(node->left);
-            }
+        TreeNode cur = root;  
+        while (cur != null) {  
+            if (cur.left != null) {  
+                if (cur.right != null) { // if we need to prune a right subtree
+                    TreeNode next = cur.left;  
+                    while (next.right != null) next = next.right;  
+                    next.right = cur.right;  
+                }
+                cur.right = cur.left;  
+                cur.left = null;  
+            }  
+            cur = cur.right;  
         }
-        
-        v.push_back(NULL);
-        for(int i=0; i<v.size(); i++){
-            if (v[i]){
-                v[i]->left = NULL;
-                v[i]->right = v[i+1];
-            }
-        }
-        
     }
 };
