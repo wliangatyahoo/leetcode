@@ -50,19 +50,19 @@
  */
 class Solution {
 public:
-    void flatten(TreeNode *root) {
-        TreeNode cur = root;  
-        while (cur != null) {  
-            if (cur.left != null) {  
-                if (cur.right != null) { // if we need to prune a right subtree
-                    TreeNode next = cur.left;  
-                    while (next.right != null) next = next.right;  
-                    next.right = cur.right;  
+    void flatten(TreeNode *&root) {
+        TreeNode *cur = root;  
+        while (cur != NULL) {  
+            if (cur->left != NULL) {  
+                if (cur->right != null) { // if we need to prune a right subtree
+                    TreeNode *next = cur->left;  
+                    while (next->right != NULL) next = next->right;  
+                    next->right = cur->right;  
                 }
-                cur.right = cur.left;  
-                cur.left = null;  
+                cur->right = cur->left;  
+                cur->left = null;  
             }  
-            cur = cur.right;  
+            cur = cur->right;
         }
     }
 };
