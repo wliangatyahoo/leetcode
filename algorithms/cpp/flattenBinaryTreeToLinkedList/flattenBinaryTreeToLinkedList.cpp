@@ -54,13 +54,13 @@ public:
         TreeNode *cur = root;  
         while (cur != NULL) {  
             if (cur->left != NULL) {  
-                if (cur->right != null) { // if we need to prune a right subtree
+                if (cur->right != NULL) { // if we need to prune a right subtree
                     TreeNode *next = cur->left;  
                     while (next->right != NULL) next = next->right;  
                     next->right = cur->right;  
                 }
                 cur->right = cur->left;  
-                cur->left = null;  
+                cur->left = NULL;  
             }  
             cur = cur->right;
         }
