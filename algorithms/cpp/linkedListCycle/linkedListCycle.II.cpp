@@ -53,25 +53,22 @@ public:
      *      until p1 and p2 meet again, that place is the cycle's start-point 
      */
     ListNode *detectCycle(ListNode *head) {
-	    if (head == NULL || head->next == NULL) return false;
-
+	if (head == NULL || head->next == NULL) return false;
     	ListNode *fast = head, *slow = head;
-
-	    while (fast != NULL && fast->next != NULL) {
-		    fast = fast->next->next;
-		    slow = slow->next;
-		    if (fast == slow) {
-			    slow = head;
-			    while(slow != fast) {
-				    slow = slow->next;
-				    fast = fast->next;
-				    if (slow == fast) {
-					    return slow;
-				    }
+	while (fast != NULL && fast->next != NULL) {
+		fast = fast->next->next;
+		slow = slow->next;
+		if (fast == slow) {
+		    slow = head;
+		    while(slow != fast) {
+			    slow = slow->next;
+			    fast = fast->next;
+			    if (slow == fast) {
+			    	return slow;
 			    }
 		    }
-	    }
-
-	    return NULL;
+	    	}
+    	}
+    	return NULL;
     }
 };
