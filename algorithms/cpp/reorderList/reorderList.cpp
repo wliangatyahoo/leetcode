@@ -83,6 +83,7 @@ private:
             p1=p1nxt;
             p2=p2nxt;
         }
+        return h1;
     }
 };
 
