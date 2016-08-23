@@ -54,9 +54,13 @@ int maximumGap(vector<int> &num) {
 
     //calculate the max gap
     int maxGap = 0;
-    int prev = 0;
+    int prev = -1;
     for (int i = 1; i < buckets.size(); i++) {
         if (buckets[i].empty()) continue;
+        if (prev == -1) {
+            prev = i;
+            continue;
+        }
         int gap = buckets[i][0] - buckets[prev][1];
         maxGap = maxGap > gap ? maxGap : gap;
         prev = i;
