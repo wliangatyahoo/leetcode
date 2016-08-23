@@ -55,7 +55,7 @@ int findPeakElement(const vector<int> &num) {
     int low = 0;
     int high = n - 1;
 
-    int mid = 0, v1, v2;
+    int mid = 0;
 
     while ( low < high ) {
 
