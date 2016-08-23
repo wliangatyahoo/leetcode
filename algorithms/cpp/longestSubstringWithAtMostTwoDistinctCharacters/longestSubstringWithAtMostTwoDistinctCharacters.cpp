@@ -31,26 +31,17 @@ using namespace std;
  * This solution can be easy to extend to "find the length of longest substring with at most K distinct char(s)"
  */
 int lengthOfLongestSubstringTwoDistinct(string s) {
-    int maxLen = 0;
-    int charMap[256] = {0};
-    int wordCnt = 0;
-    int start = 0;
-
-    for(int i=0; i<s.size(); i++){
-        if ( charMap[s[i]]++ == 0 ){
-            wordCnt++;
-        }
-        while (wordCnt>2){
-            charMap[s[start]]--;
-            if (charMap[s[start]]==0){
-                wordCnt--;
+        int res = 0, left = 0;
+        unordered_map<char, int> m;
+        for (int i = 0; i < s.size(); ++i) {
+            ++m[s[i]];
+            while (m.size() > k) {
+                if (--m[s[left]] == 0) m.erase(s[left]);
+                ++left;
             }
-            start++;
+            res = max(res, i - left + 1);
         }
-        maxLen = max(maxLen, i - start + 1);
-    }
-
-    return maxLen;
+        return res;
 }
 
 
