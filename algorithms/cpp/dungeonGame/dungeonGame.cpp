@@ -22,7 +22,7 @@
  *   
  *   +------+------+------+
  *   |      |      |      |
- *   | -2(K)|  -3  |  -3  |
+ *   | -2(K)|  -3  |  3  |
  *   |      |      |      |
  *   +--------------------+
  *   |      |      |      |
@@ -48,41 +48,22 @@
 class Solution {
     public:
         int calculateMinimumHP(vector<vector<int> > &dungeon) {
-            int row = dungeon.size();
-            int col = row>0 ? dungeon[0].size() : 0;
-            if (row<=0 || col <=0) return 0;
-
-            //dp[r][c] = min( max( dp[r+1][c] - dungeon[r][c], 1), max( dp[r][c+1] - dungeon[r][c], 1) );
-            int dp[row][col];
-            memset(dp, 0, sizeof(dp));
-
-            for(int r=row-1; r>=0; r--){
-                for (int c=col-1; c>=0; c--){
-
-                    /*if (r == row - 1 && c == col - 1 ){
-                      dp[r][c] = max(1 - dungeon[r][c], 1);
-                      }else if ( r == row - 1 ) {
-                      dp[r][c] = max(dp[r][c+1] - dungeon[r][c], 1);
-                      }else if ( c == col - 1 ) {
-                      dp[r][c] = max(dp[r+1][c] - dungeon[r][c], 1);
-                      }else{
-                      dp[r][c] = min( max( dp[r+1][c] - dungeon[r][c], 1), max( dp[r][c+1] - dungeon[r][c], 1) );
-                      }*/
-
-                    if (r == row - 1 && c == col - 1 ){
-                        dp[r][c] = max(1 - dungeon[r][c], 1);
-                    }else{ 
-                        int h1 = ( c == col-1  ) ? INT_MAX : max(dp[r][c+1] - dungeon[r][c], 1);
-                        int h2 =  ( r == row-1 ) ? INT_MAX : max(dp[r+1][c] - dungeon[r][c], 1);
-
-                        dp[r][c] = min( h1, h2 );
-                    }
-
-                }
-            }
-
-            return dp[0][0];
-
-
+	        if (dungeon.size() == 0) return 0;
+	        int row = dungeon.size();
+	        int col = dungeon[0].size();
+	        int dp[row][col] = {0};
+	        dp[row-1][col-1] = max(1, 1-dungeon[row-1][col-1]);
+	        for(int i=row-2; i >= 0; i—-) {
+		        dp[i][col-1] = max(1, dp[i+1][col-1] - dungeon[i][col-1]);
+	        }
+	        for(int j=col-2; j >= 0; j—-) {
+		        dp[row-1][j] = max(1, dp[row-1][j+1] - dungeon[row-1][j]);
+	        }
+	        for(int i = row-2; i>=0; i—-) {
+		        for(int j = col-2; j>=0; j—-) {
+			        dp[i][j] = max(1, min(dp[i+1][j], dp[i][j+1])-dungeon[i][j]);
+		        }
+	        }
+	        return dp[0][0];
         }
 };
