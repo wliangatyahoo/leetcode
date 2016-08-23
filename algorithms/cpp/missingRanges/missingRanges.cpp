@@ -37,30 +37,23 @@ string& makeRange(int lo, int hi){
 
 
 vector<string> findMissingRanges(int A[], int n, int lower, int upper) {
+	vector<string> result;
+	if (n <=0) return result;
 
-    vector<string> result;
+	for(int i = 0; i < n-1; i++) {
+		if (A[i+1] == A[i]+1) continue;
+		int aLow = A[i] + 1;
+		int aHigh = A[i+1]-1;
+		if (aHigh < lower || aLow > upper) {
+			continue;
+		} else {
+			int realLow = max(lower, aLow);
+			int realHigh = min(upper, aHigh);
+			result.push_back(makeRange(realLow, realHigh));
+		}
+	}
 
-    if ( n<=0 ) {
-        result.push_back(makeRange(lower, upper));
-        return result;
-    }
-
-    if (lower < A[0]){
-        result.push_back(makeRange(lower, A[0]-1 < upper ? A[0]-1 : upper));
-    }
-
-    for(int i=0; i<n-1; i++){
-        if ( A[i] + 1 == A[i+1] ) {
-            continue;
-        }
-        result.push_back(makeRange(A[i]+1, A[i+1]-1));
-    }
-
-    if (upper > A[n-1]){
-        result.push_back(makeRange(A[n-1]+1, upper));
-    }
-
-    return result;
+	return result;
 }
 
 
