@@ -31,9 +31,10 @@ public:
      *  
      *  dp[i, j] = max ( 
      *               dp[i, j-1], // same times transactions, but one days before.    
-     *               dp[i-1, t] + prices[j] - prices[t+1]  // for all of (0 <= t < j )
+     *               dp[i-1, t] + prices[j] - prices[t]  // for all of (0 <= t < j )
      *                                                     // this means find max profit from previous any of days
      *           )
+     * = max(dp[i, j-1], prices[j] + max(dp[i-1, t] - prices[t]))
      *  
      */
 
