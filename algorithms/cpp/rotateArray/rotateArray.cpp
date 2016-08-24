@@ -59,27 +59,16 @@ void rotate1(int nums[], int n, int k) {
  */
 void rotate2(int nums[], int n, int k) {
     if (k<=0) return;
-    k %= n;
-    int currIdx=0, newIdx=k;
-    int tmp1 = nums[currIdx], tmp2; 
-    int origin = 0;
-
-    for(int i=0; i<n; i++){
-
-        tmp2 = nums[newIdx];
-        nums[newIdx] = tmp1;
-        tmp1 = tmp2; 
-
-        currIdx = newIdx;
-
-        //if we meet a circle, move the next one
-        if (origin == currIdx) {
-            origin = ++currIdx;
-            tmp1 = nums[currIdx];
-        }
-        newIdx = (currIdx + k) % n;
-
-    } 
+    k%=n;
+    int start = 0;
+    int temp1 = nums[start];
+    for(int i = 0; i<n;i++) {
+        int nextIdx = (start+k)%n;
+        int temp2 = nums[nextIdx];
+        nums[nextIdx] = temp1;
+        start = nextIdx;
+        temp1 = temp2;
+    }
 }
 
 void rotate(int nums[], int n, int k) {
