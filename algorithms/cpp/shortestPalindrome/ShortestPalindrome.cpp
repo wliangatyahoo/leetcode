@@ -129,41 +129,32 @@ string shortestPalindrome_dp(string& s) {
  */
 
 string shortestPalindrome_kmp(string& s) {  
-    int len = s.size();
-    if(len <= 1) return s;
-    
-    string pattern = s + '\0' + string(s.rbegin(), s.rend());  
-
-    //construct the partial match table
-    vector<int> prefix( pattern.size() );  
-    prefix[0] = 0;
-    for(int i = 1; i < prefix.size(); i++) {  
-        int j = prefix[i-1];  
-        while( j > 0 && pattern[i] != pattern[j] ) {
-            j = prefix[j-1];  
+    string rs = s;  // rs means reverse str of s;
+    std::reverse(rs.begin(), rs.end());
+    string mirror = s + "#" + rs;  // so if the s is aacecaaa the mirror is like               aacecaaa#aaacecaa
+    //now we run kmp algorithm on mirror we will get next fun of mirror, so mirror is just like a pattern in kmp algorithm
+    vector<int> next(mirror.size(),0);
+    next[0] = 0;//this is really not needed, because we have init all next to 0, here we just set first character's next 0
+    for(int i = 1, k = 0; i < mirror.size(); i++){
+        while(k > 0 && mirror[k] != mirror[i]){ //if the suffix mismatch the preffix, we set k back just like AC goto fun
+            k = next[k-1];
         }
-        if ( pattern[i] == pattern[j] ) {
-            j++;  
+        if(mirror[k] == mirror[i]){   // here suffix match preffix ,so we add k++
+            k++;
         }
-        prefix[i] = j;  
-    }  
-
-#ifdef _DEBUG
-    cout << endl;
-    for(int i=0; i<pattern.size(); i++){
-        
-        cout << (pattern[i] ? pattern[i] : '#') << "  ";
+        next[i] = k;
     }
-    cout << endl;
-    for(int i=0; i<prefix.size(); i++) {
-        cout << prefix[i] << "  ";
-    }
-    cout << endl;
-    cout << "-->" << s.substr(0, prefix.back()) << " " << s.substr(prefix.back()) << endl;
-#endif
-
-    int pos = s.size() - prefix.back();  
-    return string(s.rbegin(), s.rbegin() + pos) + s;  
+    //when we finish the next, we will get like below
+    //string = a a c e c a a a # a a a c e c a a
+    //next   = 0 1 0 0 0 1 2 2 0 1 2 2 3 4 5 6 7
+    // this is just the next index of character of kmp
+    //if you can not understand this see here
+    //http://www.cnblogs.com/c-cloud/p/3224788.html
+    //the last character's next is all we need
+    int matchnums = next[mirror.size()-1];
+    int mismatch = rs.size() - matchnums;
+    string misstr = rs.substr(0,mismatch);
+    return misstr + s;
 }  
 
 
