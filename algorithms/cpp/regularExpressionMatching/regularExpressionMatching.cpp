@@ -30,30 +30,19 @@
 #include <string.h>
 #include <iostream>
 
-using namespace std;
-
-
 bool isMatch(const char *s, const char *p) {
-
-    if (*p=='\0') {
-        return *s == '\0';
+    if (*p == '\0') return *s == '\0';
+    
+    // next char is not '*': must match current character
+    if (*(p+1) != '*') {
+        return ((*p == *s) || (*p == '.' && *s != '\0')) && isMatch(s+1, p+1);
     }
-    //p's length 1 is special case 
-    if (*(p+1) == '\0' || *(p+1) !='*' ) {
-        if (*s=='\0' || ( *p !='.' && *s != *p )) {
-            return false;
-        }
-        return isMatch(s+1, p+1);
+    // next char is '*'
+    while ((*p == *s) || (*p == '.' && *s != '\0')) {
+        if (isMatch(s, p+2)) return true;
+        s++;
     }
-    int len = strlen(s);
-    int i = -1;
-    while (i < len && (i <0 || *p=='.' || *p==*(s+i)) ){
-        if (isMatch(s+i+1, p+2)) {
-            return true;
-        }
-        i++;
-    }
-    return false;
+    return isMatch(s, p+2);
 }
 
 
