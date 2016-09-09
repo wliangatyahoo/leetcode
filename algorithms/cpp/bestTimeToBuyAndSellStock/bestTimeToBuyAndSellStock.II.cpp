@@ -13,35 +13,18 @@
 *               
 **********************************************************************************/
 
-class Solution {
-public:
-    //
-    // find all of ranges: which start a valley with the nearest peak after
-    // add their delta together 
-    //
-    int maxProfit(vector<int> &prices) {
-        int max=0, begin=0, end=0;
-        bool up=false, down=false;
-        for (int i=1; i<prices.size(); i++) {
-            if (prices[i] > prices[i-1] && up==false){ // goes up
-                begin = i-1;
-                up = true;
-                down = false;
+public class Solution {
+    public int maxProfit(int[] prices) {
+        if (prices.length < 2) return 0;
+        
+        int maxProfit = 0;
+        for (int i = 1; i < prices.length; i++) {
+            int diff = prices[i] - prices[i - 1];
+            if (diff > 0) {
+                maxProfit += diff;
             }
-            
-            if (prices[i] < prices[i-1] && down==false) { // goes down
-                end = i-1;
-                down = true;
-                up = false;
-                max += (prices[end] - prices[begin]);
-            }
-        }
-        // edge case 
-        if (begin < prices.size() && up==true){
-            end = prices.size() - 1;
-            max += (prices[end] - prices[begin]);
         }
         
-        return max;
+        return maxProfit;
     }
-};
+}
