@@ -8,45 +8,22 @@
 * 
 * If you were only permitted to complete at most one transaction (ie, buy one and sell one share of the stock), 
 * design an algorithm to find the maximum profit.
+* 分析：动态规划法。从前向后遍历数组，记录当前出现过的最低价格，作为买入价格，并计算以当天价格出售的收益，作为可能的最大收益，整个遍历过程中，出现过的最大收益就是所求。
 *               
 **********************************************************************************/
 
-class Solution {
-public:
-    //
-    // This solution is O(1) space dynamic programming 
-    //
-    // We can make sure the max profit at least be ZERO. So,
-    //    1) we have two pointers (begin & end ) 
-    //    2) if prices[end] - prices[begin] >  0, then move the "end" pointer to next
-    //    3) if prices[end] - prices[begin] <= 0, then move the "begin" pointer to current posstion.
-    //    4) tracking the max profit
-    //
-    // Notes:
-    //    Some people think find the highest-price & lowest-price, this is wrong. 
-    //    Because the highest-price must be after lowest-price
-    //
-    int maxProfit(vector<int> &prices) {
+public class Solution {
+    public int maxProfit(int[] prices) {
+        if (prices.length < 2) return 0;
         
-        int max=0, begin=0, end=0, delta=0;
+        int maxProfit = 0;
+        int curMin = prices[0];
         
-        for (int i=0; i<prices.size(); i++) {
-            
-            end = i;
-            
-            delta = prices[end] - prices[begin];
-            
-            if (delta <= 0){
-                begin = i;
-            }
-            
-            if ( delta > max ){
-                max = delta;
-            }
-            
+        for (int i = 1; i < prices.length; i++) {
+            curMin = Math.min(curMin, prices[i]);
+            maxProfit = Math.max(maxProfit, prices[i] - curMin);
         }
         
-        return max;
-        
+        return maxProfit;
     }
-};
+}
