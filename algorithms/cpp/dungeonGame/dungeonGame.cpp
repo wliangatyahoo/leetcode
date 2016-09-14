@@ -61,7 +61,7 @@ class Solution {
 	        }
 	        for(int i = row-2; i>=0; i—-) {
 		        for(int j = col-2; j>=0; j—-) {
-			        dp[i][j] = max(1, min(dp[i+1][j], dp[i][j+1])-dungeon[i][j]);
+			        dp[i][j] = max(1, min(dp[i+1][j]-dungeon[i][j], dp[i][j+1])-dungeon[i][j]);
 		        }
 	        }
 	        return dp[0][0];
