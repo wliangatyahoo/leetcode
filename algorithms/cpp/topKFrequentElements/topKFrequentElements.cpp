@@ -18,48 +18,34 @@
 
 class Solution {
 public:
-    struct element//structure consisting of every distinct number in the vector,
-    //along with its frequency
-    {
-        int number, frequency;
-        bool operator < (const element arg) const
-        {
-            return frequency < arg.frequency;
-        }
-    };
-    priority_queue <element> sol;//we use a heap so we have all of the elements sorted
-    //by their frequency
-    vector <int> solution;
-    
     vector<int> topKFrequent(vector<int>& nums, int k) {
-        sort(nums.begin(), nums.end());
-        int i = 1;
-        for(; i < nums.size(); i++)
-        {
-            int freq = 1;
-            while(i < nums.size() && nums[i] == nums[i - 1])
-            {
-                i++;
-                freq++;
+        map<int, int> m;
+        for (int i = 0; i < nums.size(); i++) {
+            if (m.find(nums[i])==m.end()) {
+                m[nums[i]] = 1;
+            } else {
+                m[nums[i]]++;
             }
-            element el;
-            el.number = nums[i - 1];
-            el.frequency = freq;
-            sol.push(el);
         }
-        if(i == nums.size())//if we have 1 distinct element as the last
-        {
-            element el;
-            el.number = nums[nums.size() - 1];
-            el.frequency = 1;
-            sol.push(el);
+        int maxF = 0;
+        for (auto it:m) {
+            maxF = max(maxF, it.second);
         }
-        while(k)//we extract the first k elements from the heap
-        {
-            solution.push_back(sol.top().number);
-            sol.pop();
-            k--;
+        vector<vector<int>> list(maxF);
+        for (auto it:m) {
+            list[it.second-1].push_back(it.first);
         }
-        return solution;
+        vector<int>result;
+        for (int i = maxF-1; i >= 0; i--) {
+            if (list[i].size()>0) {
+                for (int j = 0; j < list[i].size();j++) {
+                    result.push_back(list[i][j]);
+                    if (result.size() >= k) {
+                        return result;
+                    }
+                }
+            }
+        }
+        return result;
     }
 };
