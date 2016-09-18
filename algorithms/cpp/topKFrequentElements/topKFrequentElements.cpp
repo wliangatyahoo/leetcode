@@ -20,6 +20,7 @@ class Solution {
 public:
     vector<int> topKFrequent(vector<int>& nums, int k) {
         map<int, int> m;
+        //count frequencies, O(n)
         for (int i = 0; i < nums.size(); i++) {
             if (m.find(nums[i])==m.end()) {
                 m[nums[i]] = 1;
@@ -27,14 +28,17 @@ public:
                 m[nums[i]]++;
             }
         }
+        //find max frequency, O(n)
         int maxF = 0;
         for (auto it:m) {
             maxF = max(maxF, it.second);
         }
+        //bucket sort, O(n)
         vector<vector<int>> list(maxF);
         for (auto it:m) {
             list[it.second-1].push_back(it.first);
         }
+        
         vector<int>result;
         for (int i = maxF-1; i >= 0; i--) {
             if (list[i].size()>0) {
